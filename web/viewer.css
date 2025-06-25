@@ -6418,3 +6418,13 @@ dialog :link{
     display:none;
   }
 }
+
+.download
+{
+    display:none !important;    
+}
+
+.print
+{
+    display:none !important;
+}
