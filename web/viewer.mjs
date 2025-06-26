@@ -17030,6 +17030,7 @@ function webViewerLoad() {
     }
   });
 document.dispatchEvent(event);
+window.parent.postMessage({ type: "webviewerloaded" }, "*"); // Optional
   PDFViewerApplication.run(config);
 }
 document.blockUnblockOnload?.(true);
