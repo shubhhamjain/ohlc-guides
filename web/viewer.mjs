@@ -17041,5 +17041,3 @@ if (document.readyState === "interactive" || document.readyState === "complete")
 }
 
 export { PDFViewerApplication, AppConstants as PDFViewerApplicationConstants, AppOptions as PDFViewerApplicationOptions };
-
-//# sourceMappingURL=viewer.mjs.map
