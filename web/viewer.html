@@ -824,46 +824,5 @@ See https://github.com/adobe-type-tools/cmap-resources
   });
 })();
 </script>
-      <script>
-(function () {
-  let alreadyBlocked = false;
-
-  function blockAccess() {
-    if (alreadyBlocked) return;
-    alreadyBlocked = true;
-    alert("Developer tools are not allowed.");
-    document.body.innerHTML = "<h1>Access Blocked</h1>";
-  }
-
-  // Detect DevTools using 'debugger' delay trick
-  setInterval(() => {
-    const before = new Date();
-    debugger;
-    const after = new Date();
-    if (after - before > 100) blockAccess();
-  }, 1000);
-
-  // Detect right-click
-  document.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-    blockAccess();
-  });
-
-  // Detect F12, Ctrl+Shift+I/J/U/C, Ctrl+S, Ctrl+U
-  document.addEventListener("keydown", function (e) {
-    const key = e.key.toLowerCase();
-    const isBlockedCombo =
-      (e.ctrlKey && ["s", "u", "c"].includes(key)) ||
-      (e.ctrlKey && e.shiftKey && ["i", "j"].includes(key)) ||
-      key === "f12";
-
-    if (isBlockedCombo) {
-      e.preventDefault();
-      e.stopPropagation();
-      blockAccess();
-    }
-  });
-})();
-</script>
   </body>
 </html>
