@@ -619,5 +619,30 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
+        <!-- Disable copy/cut/paste/contextmenu -->
+<style>
+  body {
+    -webkit-touch-callout: none; /* iOS: disable the copy/paste menu */
+  }
+</style>
+<script>
+// Prevent context menu (right-click / long-press)
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+// Block copy and cut
+document.addEventListener('copy', function(e) {
+  e.clipboardData.setData('text/plain', 'Copying Forbidden');
+  e.preventDefault();
+});
+document.addEventListener('cut', function(e) {
+  e.preventDefault();
+});
+// Intercept paste and show warning
+document.addEventListener('paste', function(e) {
+  e.preventDefault();
+  alert("Copying Forbidden");
+});
+</script>
   </body>
 </html>
