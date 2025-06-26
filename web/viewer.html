@@ -773,31 +773,37 @@ See https://github.com/adobe-type-tools/cmap-resources
   });
 </script>
       <script>
-  // Completely disable drag-and-drop anywhere in the document
-  window.addEventListener("dragover", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  });
+  function disableDragAndDrop() {
+    const events = ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave", "drop"];
+    const prevent = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
 
-  window.addEventListener("drop", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  });
+    // Disable drag events on document
+    events.forEach(event => {
+      document.addEventListener(event, prevent, false);
+    });
 
-  // Also remove any drop target behavior on the PDF container itself
-  window.addEventListener("load", function () {
+    // Also try disabling on PDF container, if exists
     const container = document.getElementById("viewerContainer");
     if (container) {
-      container.addEventListener("dragover", e => {
-        e.preventDefault();
-        e.stopPropagation();
-      });
-      container.addEventListener("drop", e => {
-        e.preventDefault();
-        e.stopPropagation();
+      events.forEach(event => {
+        container.addEventListener(event, prevent, false);
       });
     }
-  });
+
+    // Extra: override PDF.js's openFile function (safety net)
+    if (window.PDFViewerApplication && window.PDFViewerApplication.openFile) {
+      window.PDFViewerApplication.openFile = () => {
+        console.log("Open file disabled.");
+        return;
+      };
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", disableDragAndDrop);
 </script>
   </body>
 </html>
