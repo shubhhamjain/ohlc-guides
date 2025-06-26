@@ -772,38 +772,57 @@ See https://github.com/adobe-type-tools/cmap-resources
     });
   });
 </script>
-      <script>
-  function disableDragAndDrop() {
-    const events = ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave", "drop"];
-    const prevent = e => {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    };
+     <script>
+(function() {
+  const events = ["drag", "dragstart", "dragend", "dragover", "dragenter", "dragleave", "drop"];
+  const prevent = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  };
 
-    // Disable drag events on document
+  // Block events on any target
+  function applyEventBlocking(root) {
     events.forEach(event => {
-      document.addEventListener(event, prevent, false);
+      root.addEventListener(event, prevent, true);
     });
-
-    // Also try disabling on PDF container, if exists
-    const container = document.getElementById("viewerContainer");
-    if (container) {
-      events.forEach(event => {
-        container.addEventListener(event, prevent, false);
-      });
-    }
-
-    // Extra: override PDF.js's openFile function (safety net)
-    if (window.PDFViewerApplication && window.PDFViewerApplication.openFile) {
-      window.PDFViewerApplication.openFile = () => {
-        console.log("Open file disabled.");
-        return;
-      };
-    }
   }
 
-  window.addEventListener("DOMContentLoaded", disableDragAndDrop);
+  // Apply early on document
+  applyEventBlocking(document);
+
+  // Apply on container if it appears later
+  const interval = setInterval(() => {
+    const container = document.getElementById("viewerContainer");
+    if (container) applyEventBlocking(container);
+  }, 300);
+
+  // Stop searching after 10 tries
+  setTimeout(() => clearInterval(interval), 5000);
+
+  // Monitor for new elements that may get drop listeners
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(m => {
+      m.addedNodes.forEach(node => {
+        if (node.nodeType === 1) {
+          applyEventBlocking(node);
+        }
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Override PDF.js file-opening API
+  window.addEventListener("DOMContentLoaded", () => {
+    const overrideOpen = () => {
+      if (window.PDFViewerApplication && window.PDFViewerApplication.openFile) {
+        window.PDFViewerApplication.openFile = () => console.log("openFile prevented");
+      }
+    };
+    overrideOpen();
+    setTimeout(overrideOpen, 1000);
+  });
+})();
 </script>
   </body>
 </html>
