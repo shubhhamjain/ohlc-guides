@@ -17030,10 +17030,15 @@ function webViewerLoad() {
     }
   });
 try {
-  parent.document.dispatchEvent(event);
+  // Safely test if we can access parent.document
+  if (window.parent === window || window.parent.location.origin === window.location.origin) {
+    parent.document.dispatchEvent(event);
+  } else {
+    document.dispatchEvent(event);
+  }
 } catch (ex) {
-  // Cross-origin access blocked – falling back to local dispatch
-  document.dispatchEvent(event); // ✅ Dispatch event on iframe's own document
+  // In case origin check itself throws, fallback safely
+  document.dispatchEvent(event);
 }
   PDFViewerApplication.run(config);
 }
