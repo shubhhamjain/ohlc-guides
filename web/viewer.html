@@ -732,30 +732,29 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
-
       <script>
-document.addEventListener("DOMContentLoaded", function () {
-  // 🔒 Block keyboard shortcuts
-  document.addEventListener("keydown", function (e) {
-    const forbiddenCombos = [
-      (e.ctrlKey || e.metaKey) && ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(e.key.toLowerCase()),
-      e.key === "F12"
-    ];
-
-    if (forbiddenCombos.some(Boolean)) {
+  // This ensures everything is blocked once the page is interactive
+  window.addEventListener("DOMContentLoaded", function () {
+    // 🔒 Disable right-click
+    document.addEventListener("contextmenu", function (e) {
       e.preventDefault();
-      e.stopPropagation();
-      console.log("Blocked shortcut:", e.key);
-    }
-  });
+      return false;
+    });
 
-  // 🔒 Disable right-click context menu
-  document.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-    console.log("Right-click disabled");
+    // 🔒 Block keyboard shortcuts
+    document.addEventListener("keydown", function (e) {
+      const key = e.key.toLowerCase();
+      const blocked =
+        (e.ctrlKey || e.metaKey) &&
+        ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(key);
+
+      if (blocked || e.key === "F12") {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    });
   });
-});
 </script>
-      
   </body>
 </html>
