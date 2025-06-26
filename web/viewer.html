@@ -733,28 +733,40 @@ See https://github.com/adobe-type-tools/cmap-resources
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
       <script>
-  // This ensures everything is blocked once the page is interactive
-  window.addEventListener("DOMContentLoaded", function () {
-    // 🔒 Disable right-click
-    document.addEventListener("contextmenu", function (e) {
-      e.preventDefault();
-      return false;
-    });
+window.addEventListener("DOMContentLoaded", function () {
+  // Block PDF.js built-in print command
+  const disablePDFPrint = () => {
+    if (window.PDFViewerApplication) {
+      window.PDFViewerApplication.print = () => {
+        console.log("Blocked internal print function");
+      };
+    } else {
+      // Wait for PDF.js to load
+      setTimeout(disablePDFPrint, 500);
+    }
+  };
+  disablePDFPrint();
 
-    // 🔒 Block keyboard shortcuts
-    document.addEventListener("keydown", function (e) {
-      const key = e.key.toLowerCase();
-      const blocked =
-        (e.ctrlKey || e.metaKey) &&
-        ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(key);
-
-      if (blocked || e.key === "F12") {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-    });
+  // Block right-click
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+    return false;
   });
+
+  // Block key combinations
+  document.addEventListener("keydown", function (e) {
+    const key = e.key.toLowerCase();
+    const blockCombo =
+      (e.ctrlKey || e.metaKey) &&
+      ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(key);
+
+    if (blockCombo || e.key === "F12") {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  });
+});
 </script>
   </body>
 </html>
