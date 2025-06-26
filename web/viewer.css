@@ -6432,7 +6432,10 @@ dialog :link{
 #editorStampButton,
 #scrollPage,
 #scrollWrapped,
-#documentProperties {
+#documentProperties
+#cursorSelectTool
+#cursorHandTool
+#viewBookmark {
   display: none !important;
 }
 
