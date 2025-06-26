@@ -8136,12 +8136,7 @@ class PDFScriptingManager {
         case "page-num":
           pdfViewer.currentPageNumber = value + 1;
           break;
-        case "print":
-          await pdfViewer.pagesPromise;
-          this.#eventBus.dispatch("print", {
-            source: this
-          });
-          break;
+        
         case "println":
           console.log(value);
           break;
@@ -8150,11 +8145,7 @@ class PDFScriptingManager {
             pdfViewer.currentScaleValue = value;
           }
           break;
-        case "SaveAs":
-          this.#eventBus.dispatch("download", {
-            source: this
-          });
-          break;
+        
         case "FirstPage":
           pdfViewer.currentPageNumber = 1;
           break;
@@ -13230,15 +13221,7 @@ class SecondaryToolbar {
       element: options.presentationModeButton,
       eventName: "presentationmode",
       close: true
-    }, {
-      element: options.printButton,
-      eventName: "print",
-      close: true
-    }, {
-      element: options.downloadButton,
-      eventName: "download",
-      close: true
-    }, {
+    },  {
       element: options.viewBookmarkButton,
       eventName: null,
       close: true
