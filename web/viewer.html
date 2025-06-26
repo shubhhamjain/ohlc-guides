@@ -773,13 +773,30 @@ See https://github.com/adobe-type-tools/cmap-resources
   });
 </script>
       <script>
-  // Disable drag-and-drop of files
+  // Completely disable drag-and-drop anywhere in the document
   window.addEventListener("dragover", function (e) {
     e.preventDefault();
+    e.stopPropagation();
   });
 
   window.addEventListener("drop", function (e) {
     e.preventDefault();
+    e.stopPropagation();
+  });
+
+  // Also remove any drop target behavior on the PDF container itself
+  window.addEventListener("load", function () {
+    const container = document.getElementById("viewerContainer");
+    if (container) {
+      container.addEventListener("dragover", e => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      container.addEventListener("drop", e => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    }
   });
 </script>
   </body>
