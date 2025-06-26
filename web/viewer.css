@@ -6425,14 +6425,14 @@ dialog :link{
 #secondaryDownload,
 #secondaryOpenFile,
 #presentationMode,
-#viewBookmark,
-#cursorHandTool,
-#cursorSelectTool,
-#editorSignature,
-#editorHighlight,
-#editorFreeText,
-#editorInk,
-#editorStamp {
+#editorSignatureButton,
+#editorHighlightButton,
+#editorFreeTextButton,
+#editorInkButton,
+#editorStampButton,
+#scrollPage,
+#scrollWrapped,
+#documentProperties {
   display: none !important;
 }
 
