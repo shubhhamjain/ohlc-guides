@@ -17029,12 +17029,8 @@ function webViewerLoad() {
       source: window
     }
   });
-  try {
-    parent.document.dispatchEvent(event);
-  } catch (ex) {
-    console.error("webviewerloaded:", ex);
-    document.dispatchEvent(event);
-  }
+  document.dispatchEvent(event);
+window.parent.postMessage({ type: "webviewerloaded" }, "*"); // Optional
   PDFViewerApplication.run(config);
 }
 document.blockUnblockOnload?.(true);
@@ -17045,5 +17041,3 @@ if (document.readyState === "interactive" || document.readyState === "complete")
 }
 
 export { PDFViewerApplication, AppConstants as PDFViewerApplicationConstants, AppOptions as PDFViewerApplicationOptions };
-
-//# sourceMappingURL=viewer.mjs.map
