@@ -17029,17 +17029,7 @@ function webViewerLoad() {
       source: window
     }
   });
-try {
-  // Safely test if we can access parent.document
-  if (window.parent === window || window.parent.location.origin === window.location.origin) {
-    parent.document.dispatchEvent(event);
-  } else {
-    document.dispatchEvent(event);
-  }
-} catch (ex) {
-  // In case origin check itself throws, fallback safely
-  document.dispatchEvent(event);
-}
+document.dispatchEvent(event);
   PDFViewerApplication.run(config);
 }
 document.blockUnblockOnload?.(true);
