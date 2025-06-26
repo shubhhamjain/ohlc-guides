@@ -6423,7 +6423,16 @@ dialog :link{
 #downloadButton,
 #secondaryPrint,
 #secondaryDownload,
-#secondaryOpenFile {
+#secondaryOpenFile,
+#presentationMode,
+#viewBookmark,
+#cursorHandTool,
+#cursorSelectTool,
+#editorSignature,
+#editorHighlight,
+#editorFreeText,
+#editorInk,
+#editorStamp {
   display: none !important;
 }
 
