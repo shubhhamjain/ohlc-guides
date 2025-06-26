@@ -14820,7 +14820,7 @@ const PDFViewerApplication = {
   annotationEditorParams: null,
   imageAltTextSettings: null,
   isInitialViewSet: false,
-  isViewerEmbedded: window.parent !== window,
+  isViewerEmbedded: false,
   url: "",
   baseUrl: "",
   mlManager: null,
