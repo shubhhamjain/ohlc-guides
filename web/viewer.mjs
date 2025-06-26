@@ -17043,28 +17043,4 @@ if (document.readyState === "interactive" || document.readyState === "complete")
 
 export { PDFViewerApplication, AppConstants as PDFViewerApplicationConstants, AppOptions as PDFViewerApplicationOptions };
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  // 🔒 Block keyboard shortcuts
-  document.addEventListener("keydown", function (e) {
-    const forbiddenCombos = [
-      (e.ctrlKey || e.metaKey) && ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(e.key.toLowerCase()),
-      e.key === "F12"
-    ];
-
-    if (forbiddenCombos.some(Boolean)) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log("Blocked shortcut:", e.key);
-    }
-  });
-
-  // 🔒 Disable right-click context menu
-  document.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-    console.log("Right-click disabled");
-  });
-});
-</script>
-
 //# sourceMappingURL=viewer.mjs.map
