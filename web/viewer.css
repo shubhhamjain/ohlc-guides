@@ -6419,10 +6419,11 @@ dialog :link{
   }
 }
 
-/* === Custom PDF Viewer Lockdown === */
-#download,
-#print,
-#openFile {
+#printButton,
+#downloadButton,
+#secondaryPrint,
+#secondaryDownload,
+#secondaryOpenFile {
   display: none !important;
 }
 
