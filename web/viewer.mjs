@@ -14820,7 +14820,7 @@ const PDFViewerApplication = {
   annotationEditorParams: null,
   imageAltTextSettings: null,
   isInitialViewSet: false,
-  isViewerEmbedded: false,
+  isViewerEmbedded: window.parent !== window,
   url: "",
   baseUrl: "",
   mlManager: null,
@@ -17029,8 +17029,12 @@ function webViewerLoad() {
       source: window
     }
   });
-document.dispatchEvent(event);
-window.parent.postMessage({ type: "webviewerloaded" }, "*"); // Optional
+  try {
+    parent.document.dispatchEvent(event);
+  } catch (ex) {
+    console.error("webviewerloaded:", ex);
+    document.dispatchEvent(event);
+  }
   PDFViewerApplication.run(config);
 }
 document.blockUnblockOnload?.(true);
