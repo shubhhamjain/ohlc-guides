@@ -824,5 +824,74 @@ See https://github.com/adobe-type-tools/cmap-resources
   });
 })();
 </script>
+      <script>
+(function () {
+  let devToolsOpened = false;
+
+  // DevTools detection by measuring pause
+  function detectDevTools() {
+    const start = new Date();
+    debugger;
+    const end = new Date();
+    if (end - start > 100) {
+      triggerBlock();
+    }
+  }
+
+  // Keyboard shortcut detection (F12, Ctrl+Shift+I/J/U)
+  function detectShortcuts(e) {
+    const key = e.key.toLowerCase();
+    if (
+      key === "f12" ||
+      (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) ||
+      (e.ctrlKey && ["u", "s"].includes(key)) // View source, save
+    ) {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerBlock();
+      return false;
+    }
+  }
+
+  // Right-click context menu block
+  document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+    triggerBlock();
+    return false;
+  });
+
+  // Block dragging (e.g. dragging PDF to new tab)
+  document.addEventListener("dragstart", function (e) {
+    e.preventDefault();
+    triggerBlock();
+  });
+
+  // Block console open via resize (works in Chrome)
+  let threshold = 160;
+  const checkResize = () => {
+    if (window.outerHeight - window.innerHeight > threshold) {
+      triggerBlock();
+    }
+  };
+
+  window.addEventListener("resize", checkResize);
+
+  // Common blocker function
+  function triggerBlock() {
+    if (!devToolsOpened) {
+      devToolsOpened = true;
+      alert("Developer tools and unauthorized access are disabled.");
+      document.body.innerHTML = "<h1>Access Blocked</h1>";
+      // Optional: window.location.href = "about:blank";
+    }
+  }
+
+  // Re-check every second
+  setInterval(detectDevTools, 1000);
+
+  // Keyboard check
+  window.addEventListener("keydown", detectShortcuts);
+})();
+</script>
   </body>
 </html>
