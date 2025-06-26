@@ -732,23 +732,5 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
-
-      <script>
-  window.addEventListener("message", function (event) {
-    if (event.origin !== "https://ohlc.in") return;
-
-    const data = event.data;
-    if (data.type === "parent-loaded") {
-      console.log("Message from parent:", data);
-
-      // Optional: send a confirmation message back
-      event.source.postMessage(
-        { type: "iframe-ready", message: "PDF viewer is ready" },
-        event.origin
-      );
-    }
-  });
-</script>
-  
   </body>
 </html>
