@@ -17029,12 +17029,12 @@ function webViewerLoad() {
       source: window
     }
   });
-  try {
-    parent.document.dispatchEvent(event);
-  } catch (ex) {
-    console.error("webviewerloaded:", ex);
-    document.dispatchEvent(event);
-  }
+try {
+  parent.document.dispatchEvent(event);
+} catch (ex) {
+  // Cross-origin access blocked – falling back to local dispatch
+  document.dispatchEvent(event); // ✅ Dispatch event on iframe's own document
+}
   PDFViewerApplication.run(config);
 }
 document.blockUnblockOnload?.(true);
