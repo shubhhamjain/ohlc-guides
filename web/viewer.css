@@ -6418,3 +6418,17 @@ dialog :link{
     display:none;
   }
 }
+
+/* === Custom PDF Viewer Lockdown === */
+#download,
+#print,
+#openFile {
+  display: none !important;
+}
+
+.textLayer {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  pointer-events: none !important;
+  cursor: default !important;
+}
