@@ -740,41 +740,37 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
-      <script>
-window.addEventListener("DOMContentLoaded", function () {
-  // Block PDF.js built-in print command
-  const disablePDFPrint = () => {
-    if (window.PDFViewerApplication) {
+     <script>
+  function blockInternalPDFPrint(retryCount = 0) {
+    if (window.PDFViewerApplication && typeof window.PDFViewerApplication.print === "function") {
       window.PDFViewerApplication.print = () => {
-        console.log("Blocked internal print function");
+        console.log("Blocked internal PDF.js print");
+        alert("Printing is disabled on this document.");
       };
-    } else {
-      // Wait for PDF.js to load
-      setTimeout(disablePDFPrint, 500);
+    } else if (retryCount < 20) {
+      setTimeout(() => blockInternalPDFPrint(retryCount + 1), 300); // retry for up to 6 seconds
     }
-  };
-  disablePDFPrint();
+  }
 
-  // Block right-click
-  document.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-    return false;
+  window.addEventListener("DOMContentLoaded", function () {
+    blockInternalPDFPrint();
+
+    // Right-click
+    document.addEventListener("contextmenu", e => e.preventDefault());
+
+    // Block keyboard shortcuts
+    document.addEventListener("keydown", function (e) {
+      const key = e.key.toLowerCase();
+      const blocked =
+        (e.ctrlKey || e.metaKey) &&
+        ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(key);
+
+      if (blocked || e.key === "F12") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
   });
-
-  // Block key combinations
-  document.addEventListener("keydown", function (e) {
-    const key = e.key.toLowerCase();
-    const blockCombo =
-      (e.ctrlKey || e.metaKey) &&
-      ["p", "s", "u", "o", "c", "a", "x", "e", "f"].includes(key);
-
-    if (blockCombo || e.key === "F12") {
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    }
-  });
-});
 </script>
       <script>
   // Disable drag-and-drop of files
